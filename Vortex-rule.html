@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#090d13">
+    <title>Vortex Rules</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --background: #323232;
+            --panel: #11161d;
+            --panel-border: #242a33;
+            --text: #dedee1;
+            --gold: #f5ca3d;
+            --gold-border: #775c18;
+            --gold-wash: rgba(245, 202, 61, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 16px 24px 20px;
+            color: var(--text);
+            background:
+                radial-gradient(ellipse at 50% 48%, rgba(28, 35, 45, 0.34), transparent 68%),
+                var(--background);
+            font-family: Arial, Helvetica, sans-serif;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        main {
+            width: min(100%, 1030px);
+            margin: 0 auto;
+        }
+
+        .zone-button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: fit-content;
+            margin: 0 0 10px auto;
+            padding: 6px 12px;
+            border: 1px solid var(--gold);
+            border-radius: 999px;
+            color: var(--gold);
+            background: linear-gradient(135deg, #1a2029, #141920);
+            text-decoration: none;
+            box-shadow:
+                0 0 7px rgba(245, 202, 61, 0.3),
+                inset 0 0 14px rgba(245, 202, 61, 0.04);
+            font: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+        }
+
+        .zone-button:hover {
+            transform: translateY(-1px);
+            background: #222a34;
+            box-shadow:
+                0 0 10px rgba(245, 202, 61, 0.55),
+                0 0 20px rgba(245, 202, 61, 0.2);
+        }
+
+        .zone-button:focus-visible {
+            outline: 3px solid var(--text);
+            outline-offset: 5px;
+        }
+
+        .zone-button-icon {
+            flex: 0 0 22px;
+            width: 22px;
+            height: 22px;
+        }
+
+        h1 {
+            margin: 0 0 23px;
+            color: #f0eff0;
+            font-size: clamp(42px, 7vw, 76px);
+            font-weight: 750;
+            letter-spacing: -2.5px;
+            line-height: 1.15;
+            text-align: center;
+            text-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
+        }
+
+        .rules-card {
+            position: relative;
+            padding: 12px 20px 14px;
+            border: 1px solid var(--panel-border);
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(20, 25, 32, 0.97), rgba(16, 21, 28, 0.97));
+            box-shadow:
+                0 16px 38px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.025);
+        }
+
+        .rules-list {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            gap: 3px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .rules-lugia {
+            position: absolute;
+            top: 8px;
+            right: 14px;
+            z-index: 0;
+            width: 112px;
+            max-width: 18%;
+        }
+
+        .rules-lugia img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .rule {
+            display: grid;
+            grid-template-columns: 28px 3px minmax(0, 1fr);
+            align-items: center;
+            column-gap: 12px;
+            min-height: 43px;
+        }
+
+        .pokeball {
+            display: block;
+            width: 28px;
+            height: 28px;
+            color: var(--gold);
+        }
+
+        .rule-divider {
+            width: 3px;
+            height: 27px;
+            border-radius: 1px;
+            background: var(--gold);
+        }
+
+        .rule-text {
+            min-height: 1.4em;
+            font-size: clamp(14px, 1.45vw, 16px);
+            font-weight: 500;
+            line-height: 1.45;
+        }
+
+        .highlight {
+            display: inline-block;
+            padding: 0.02em 0.36em 0.08em;
+            border: 1px solid var(--gold-border);
+            border-radius: 11px;
+            color: var(--gold);
+            background: var(--gold-wash);
+            font-weight: 700;
+            font-size: inherit;
+            line-height: 1.35;
+            vertical-align: 0.02em;
+        }
+
+        .sprite-card {
+            margin-top: 24px;
+            padding: 22px;
+            border: 1px solid var(--panel-border);
+            border-radius: 21px;
+            background: linear-gradient(135deg, rgba(20, 25, 32, 0.97), rgba(16, 21, 28, 0.97));
+            text-align: center;
+        }
+
+        .sprite-card h2 {
+            margin: 0 0 16px;
+            color: var(--gold);
+            font-size: 20px;
+        }
+
+        .sprite-sheet {
+            display: block;
+            width: min(100%, 648px);
+            height: auto;
+            margin: 0 auto;
+            image-rendering: pixelated;
+        }
+
+        .sprite-caption {
+            margin: 14px 0 0;
+            color: #b6b8bd;
+            font-size: 13px;
+        }
+
+        .sprite-caption a {
+            color: var(--gold);
+        }
+
+        .tabs {
+            margin-top: 8px;
+        }
+
+        .tab-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0 0 8px;
+        }
+
+        .tab {
+            min-height: 32px;
+            padding: 6px 12px;
+            border: 1px solid transparent;
+            border-radius: 999px;
+            color: #b6b8bd;
+            background: transparent;
+            font: inherit;
+            font-size: 14px;
+            cursor: pointer;
+            transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+        }
+
+        .tab:hover {
+            color: var(--text);
+            background: rgba(245, 202, 61, 0.06);
+        }
+
+        .tab[aria-selected="true"] {
+            border-color: var(--gold-border);
+            color: var(--gold);
+            background: var(--gold-wash);
+            font-weight: 700;
+        }
+
+        .tab:focus-visible {
+            outline: 3px solid var(--text);
+            outline-offset: 3px;
+        }
+
+        .tab-panel[hidden] {
+            display: none;
+        }
+
+        .trainer-card {
+            padding: 14px;
+            border: 1px solid var(--panel-border);
+            border-radius: 21px;
+            background: linear-gradient(135deg, rgba(20, 25, 32, 0.97), rgba(16, 21, 28, 0.97));
+            box-shadow:
+                0 16px 38px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.025);
+        }
+
+        .trainer-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+            align-items: start;
+            gap: 20px;
+        }
+
+        .trainer-gif,
+        .trainer-info {
+            min-width: 0;
+        }
+
+        .trainer-gif {
+            max-width: 260px;
+        }
+
+        .trainer-info h2 {
+            margin: 0 0 6px;
+            color: var(--gold);
+            font-size: 20px;
+        }
+
+        .mock-note {
+            margin: 0 0 10px;
+            color: #b6b8bd;
+            font-size: 13px;
+        }
+
+        .trainer-stats {
+            display: grid;
+            gap: 6px;
+            margin: 0;
+        }
+
+        .trainer-stat {
+            padding: 8px 10px;
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            background: rgba(9, 13, 19, 0.35);
+        }
+
+        .trainer-stat dt {
+            margin-bottom: 3px;
+            color: #b6b8bd;
+            font-size: 13px;
+        }
+
+        .trainer-stat dd {
+            margin: 0;
+            color: var(--text);
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .pokemon-team {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 6px;
+            margin: 5px 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .pokemon-team li {
+            padding: 6px 7px;
+            border: 1px solid var(--gold-border);
+            border-radius: 10px;
+            color: var(--gold);
+            background: var(--gold-wash);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 12px 12px 20px;
+            }
+
+            h1 {
+                margin-bottom: 19px;
+                letter-spacing: -1.5px;
+            }
+
+            .rules-card {
+                padding: 10px 12px 12px;
+                border-radius: 17px;
+            }
+
+            .rules-lugia {
+                top: 4px;
+                right: 8px;
+                width: 64px;
+                max-width: 18%;
+            }
+
+            .rule:first-child .rule-text {
+                padding-right: 68px;
+            }
+
+            .sprite-card {
+                padding: 17px 12px;
+                border-radius: 17px;
+            }
+
+            .tabs {
+                margin-top: 6px;
+            }
+
+            .tab-list {
+                gap: 3px;
+                margin-bottom: 6px;
+            }
+
+            .tab {
+                min-height: 34px;
+                padding: 6px 10px;
+                font-size: 14px;
+            }
+
+            .trainer-card {
+                padding: 12px;
+                border-radius: 17px;
+            }
+
+            .trainer-grid {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 12px;
+            }
+
+            .trainer-gif {
+                max-width: 210px;
+            }
+
+            .pokemon-team {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .zone-button {
+                gap: 7px;
+                margin-bottom: 8px;
+                padding: 6px 10px;
+                font-size: 14px;
+            }
+
+            .zone-button-icon {
+                flex-basis: 20px;
+                width: 20px;
+                height: 20px;
+            }
+
+            .rules-list {
+                gap: 3px;
+            }
+
+            .rule {
+                grid-template-columns: 24px 3px minmax(0, 1fr);
+                column-gap: 9px;
+                min-height: 40px;
+            }
+
+            .pokeball {
+                width: 24px;
+                height: 24px;
+            }
+
+            .rule-divider {
+                width: 3px;
+                height: 24px;
+            }
+
+            .rule-text {
+                font-size: 15px;
+                line-height: 1.45;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <a class="zone-button" href="https://docs.google.com/forms/d/e/1FAIpQLScX7On9NigrHsgnK8KJ4yqGEKwNasQ1YtEfAtT-5ndRH7_kog/viewform?usp=preview" target="_blank" rel="noopener noreferrer">
+            <svg class="zone-button-icon" viewBox="0 0 60 60" aria-hidden="true">
+                <circle cx="30" cy="30" r="27" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                <path d="M3 30h18M39 30h18" fill="none" stroke="currentColor" stroke-width="3"/>
+                <circle cx="30" cy="30" r="10" fill="none" stroke="currentColor" stroke-width="4"/>
+            </svg>
+            <span>Registro de Pokémon por zona</span>
+        </a>
+        <div class="tabs">
+            <div class="tab-list" role="tablist" aria-label="Secciones de Vortex">
+                <button class="tab" id="tab-rules" type="button" role="tab" aria-selected="true" aria-controls="panel-rules" tabindex="0">Rules</button>
+                <button class="tab" id="tab-trainer-1" type="button" role="tab" aria-selected="false" aria-controls="panel-trainer-1" tabindex="-1">Entrenador 1</button>
+                <button class="tab" id="tab-trainer-2" type="button" role="tab" aria-selected="false" aria-controls="panel-trainer-2" tabindex="-1">Entrenador 2</button>
+                <button class="tab" id="tab-trainer-3" type="button" role="tab" aria-selected="false" aria-controls="panel-trainer-3" tabindex="-1">Entrenador 3</button>
+            </div>
+            <section class="tab-panel rules-card" id="panel-rules" role="tabpanel" aria-labelledby="tab-rules" tabindex="0">
+            <ul class="rules-list">
+                <li class="rule">
+                    <svg class="pokeball" viewBox="0 0 36 36" aria-hidden="true">
+                        <circle cx="18" cy="18" r="16.5" fill="currentColor"/>
+                        <path d="M2 18h32" fill="none" stroke="#15191e" stroke-width="5"/>
+                        <circle cx="18" cy="18" r="6.3" fill="currentColor" stroke="#15191e" stroke-width="3.5"/>
+                    </svg>
+                    <span class="rule-divider" aria-hidden="true"></span>
+                    <div class="rule-text">Solo se puede atrapar <span class="highlight">UN POKEMON</span> por <span class="highlight">MAPA</span></div>
+                </li>
+                <li class="rule">
+                    <svg class="pokeball" viewBox="0 0 36 36" aria-hidden="true">
+                        <circle cx="18" cy="18" r="16.5" fill="currentColor"/>
+                        <path d="M2 18h32" fill="none" stroke="#15191e" stroke-width="5"/>
+                        <circle cx="18" cy="18" r="6.3" fill="currentColor" stroke="#15191e" stroke-width="3.5"/>
+                    </svg>
+                    <span class="rule-divider" aria-hidden="true"></span>
+                    <div class="rule-text">Los <span class="highlight">POKEMONES DEBILITADOS</span> en batallas de <span class="highlight">GYM</span> se consideran <span class="highlight">MUERTO</span></div>
+                </li>
+                <li class="rule">
+                    <svg class="pokeball" viewBox="0 0 36 36" aria-hidden="true">
+                        <circle cx="18" cy="18" r="16.5" fill="currentColor"/>
+                        <path d="M2 18h32" fill="none" stroke="#15191e" stroke-width="5"/>
+                        <circle cx="18" cy="18" r="6.3" fill="currentColor" stroke="#15191e" stroke-width="3.5"/>
+                    </svg>
+                    <span class="rule-divider" aria-hidden="true"></span>
+                    <div class="rule-text">Tienes permitido <span class="highlight">COMPRAR/CAMBIAR 3 ATAQUES*</span> previa a desafiar un <span class="highlight">GYM</span></div>
+                </li>
+                <li class="rule">
+                    <svg class="pokeball" viewBox="0 0 36 36" aria-hidden="true">
+                        <circle cx="18" cy="18" r="16.5" fill="currentColor"/>
+                        <path d="M2 18h32" fill="none" stroke="#15191e" stroke-width="5"/>
+                        <circle cx="18" cy="18" r="6.3" fill="currentColor" stroke="#15191e" stroke-width="3.5"/>
+                    </svg>
+                    <span class="rule-divider" aria-hidden="true"></span>
+                    <div class="rule-text">Tienes <span class="highlight">6 CAMBIOS*</span> de <span class="highlight">POKEMON</span> previa a desafiar un <span class="highlight">GYM</span></div>
+                </li>
+                <li class="rule">
+                    <svg class="pokeball" viewBox="0 0 36 36" aria-hidden="true">
+                        <circle cx="18" cy="18" r="16.5" fill="currentColor"/>
+                        <path d="M2 18h32" fill="none" stroke="#15191e" stroke-width="5"/>
+                        <circle cx="18" cy="18" r="6.3" fill="currentColor" stroke="#15191e" stroke-width="3.5"/>
+                    </svg>
+                    <span class="rule-divider" aria-hidden="true"></span>
+                    <div class="rule-text">Tienes permitido usar <span class="highlight">3 POCIONES</span> durante batalla de <span class="highlight">GYM</span></div>
+                </li>
+                <li class="rule">
+                    <svg class="pokeball" viewBox="0 0 36 36" aria-hidden="true">
+                        <circle cx="18" cy="18" r="16.5" fill="currentColor"/>
+                        <path d="M2 18h32" fill="none" stroke="#15191e" stroke-width="5"/>
+                        <circle cx="18" cy="18" r="6.3" fill="currentColor" stroke="#15191e" stroke-width="3.5"/>
+                    </svg>
+                    <span class="rule-divider" aria-hidden="true"></span>
+                    <div class="rule-text"><span class="highlight">NO</span> se acumulan <span class="highlight">CAMBIOS</span> y <span class="highlight">ATAQUES</span></div>
+                </li>
+                <li class="rule">
+                    <svg class="pokeball" viewBox="0 0 36 36" aria-hidden="true">
+                        <circle cx="18" cy="18" r="16.5" fill="currentColor"/>
+                        <path d="M2 18h32" fill="none" stroke="#15191e" stroke-width="5"/>
+                        <circle cx="18" cy="18" r="6.3" fill="currentColor" stroke="#15191e" stroke-width="3.5"/>
+                    </svg>
+                    <span class="rule-divider" aria-hidden="true"></span>
+                    <div class="rule-text">El <span class="highlight">INICIAL NO</span> se puede <span class="highlight">REMOVER</span> del <span class="highlight">EQUIPO</span></div>
+                </li>
+                <li class="rule">
+                    <svg class="pokeball" viewBox="0 0 36 36" aria-hidden="true">
+                        <circle cx="18" cy="18" r="16.5" fill="currentColor"/>
+                        <path d="M2 18h32" fill="none" stroke="#15191e" stroke-width="5"/>
+                        <circle cx="18" cy="18" r="6.3" fill="currentColor" stroke="#15191e" stroke-width="3.5"/>
+                    </svg>
+                    <span class="rule-divider" aria-hidden="true"></span>
+                    <div class="rule-text">Si el <span class="highlight">INICIAL</span> se muere, debes <span class="highlight">SACRIFICAR</span> el <span class="highlight">POKEMON</span> de level mas <span class="highlight">ALTO</span></div>
+                </li>
+                <li class="rule">
+                    <svg class="pokeball" viewBox="0 0 36 36" aria-hidden="true">
+                        <circle cx="18" cy="18" r="16.5" fill="currentColor"/>
+                        <path d="M2 18h32" fill="none" stroke="#15191e" stroke-width="5"/>
+                        <circle cx="18" cy="18" r="6.3" fill="currentColor" stroke="#15191e" stroke-width="3.5"/>
+                    </svg>
+                    <span class="rule-divider" aria-hidden="true"></span>
+                    <div class="rule-text"><span class="highlight">LEGENDARIOS</span> pueden ser atrapados sin importar reglas</div>
+                </li>
+                <li class="rule">
+                    <svg class="pokeball" viewBox="0 0 36 36" aria-hidden="true">
+                        <circle cx="18" cy="18" r="16.5" fill="currentColor"/>
+                        <path d="M2 18h32" fill="none" stroke="#15191e" stroke-width="5"/>
+                        <circle cx="18" cy="18" r="6.3" fill="currentColor" stroke="#15191e" stroke-width="3.5"/>
+                    </svg>
+                    <span class="rule-divider" aria-hidden="true"></span>
+                    <div class="rule-text">Al <span class="highlight">DERROTAR</span> todos los <span class="highlight">LIDERES</span> de una región se <span class="highlight">HABILITA REEMPLAZAR</span> un <span class="highlight">POKEMON</span> en cualquier zona</div>
+                </li>
+            </ul>
+            <div class="rules-lugia" role="group" aria-label="GIF de Lugia">
+                <img src="lugia-pokemon.gif" alt="Lugia volando">
+            </div>
+            </section>
+            <section class="tab-panel trainer-card" id="panel-trainer-1" role="tabpanel" aria-labelledby="tab-trainer-1" tabindex="0" hidden>
+                <div class="trainer-grid">
+                    <div class="trainer-gif">
+                        <div class="tenor-gif-embed" data-postid="20348681" data-share-method="host" data-aspect-ratio="0.6625" data-width="100%">
+                            <a href="https://tenor.com/view/pokemon-pokemon-gen5-hilbert-black-trainer-gif-20348681">Pokemon Pokemon Gen5 Sticker</a>
+                            from <a href="https://tenor.com/search/pokemon-stickers">Pokemon Stickers</a>
+                        </div>
+                    </div>
+                    <div class="trainer-info">
+                        <h2>Entrenador 1</h2>
+                        <p class="mock-note">Datos de ejemplo</p>
+                        <dl class="trainer-stats">
+                            <div class="trainer-stat"><dt>Nombre</dt><dd>Entrenador 1</dd></div>
+                            <div class="trainer-stat"><dt>Próximo gimnasio</dt><dd>Ciudad Plateada</dd></div>
+                            <div class="trainer-stat">
+                                <dt>Cambios disponibles</dt><dd>6</dd>
+                            </div>
+                            <div class="trainer-stat">
+                                <dt>Pokémon actuales</dt>
+                                <dd><ul class="pokemon-team"><li>Pikachu · Nv. 12</li><li>Charmeleon · Nv. 16</li><li>Butterfree · Nv. 10</li><li>Pidgeotto · Nv. 14</li><li>Geodude · Nv. 11</li><li>Oddish · Nv. 9</li></ul></dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+            </section>
+            <section class="tab-panel trainer-card" id="panel-trainer-2" role="tabpanel" aria-labelledby="tab-trainer-2" tabindex="0" hidden>
+                <div class="trainer-grid">
+                    <div class="trainer-gif">
+                        <div class="tenor-gif-embed" data-postid="22763226" data-share-method="host" data-aspect-ratio="0.640625" data-width="100%">
+                            <a href="https://tenor.com/view/pokemon-gif-22763226">Pokemon Sticker</a>
+                            from <a href="https://tenor.com/search/pokemon-stickers">Pokemon Stickers</a>
+                        </div>
+                    </div>
+                    <div class="trainer-info">
+                        <h2>Entrenador 2</h2>
+                        <p class="mock-note">Datos de ejemplo</p>
+                        <dl class="trainer-stats">
+                            <div class="trainer-stat"><dt>Nombre</dt><dd>Entrenador 2</dd></div>
+                            <div class="trainer-stat"><dt>Próximo gimnasio</dt><dd>Ciudad Celeste</dd></div>
+                            <div class="trainer-stat"><dt>Cambios disponibles</dt><dd>6</dd></div>
+                            <div class="trainer-stat">
+                                <dt>Pokémon actuales</dt>
+                                <dd><ul class="pokemon-team"><li>Ivysaur · Nv. 18</li><li>Growlithe · Nv. 15</li><li>Poliwag · Nv. 12</li><li>Abra · Nv. 11</li><li>Sandshrew · Nv. 14</li><li>Jigglypuff · Nv. 10</li></ul></dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+            </section>
+            <section class="tab-panel trainer-card" id="panel-trainer-3" role="tabpanel" aria-labelledby="tab-trainer-3" tabindex="0" hidden>
+                <div class="trainer-grid">
+                    <div class="trainer-gif">
+                        <div class="tenor-gif-embed" data-postid="8506778864069852471" data-share-method="host" data-aspect-ratio="1.07317" data-width="100%">
+                            <a href="https://tenor.com/view/elite-four-pokemon-koga-gif-8506778864069852471">Elite Four Pokemon Sticker</a>
+                            from <a href="https://tenor.com/search/elite+four-stickers">Elite Four Stickers</a>
+                        </div>
+                    </div>
+                    <div class="trainer-info">
+                        <h2>Entrenador 3</h2>
+                        <p class="mock-note">Datos de ejemplo</p>
+                        <dl class="trainer-stats">
+                            <div class="trainer-stat"><dt>Nombre</dt><dd>Entrenador 3</dd></div>
+                            <div class="trainer-stat"><dt>Próximo gimnasio</dt><dd>Ciudad Carmín</dd></div>
+                            <div class="trainer-stat"><dt>Cambios disponibles</dt><dd>6</dd></div>
+                            <div class="trainer-stat">
+                                <dt>Pokémon actuales</dt>
+                                <dd><ul class="pokemon-team"><li>Venusaur · Nv. 22</li><li>Arcanine · Nv. 20</li><li>Vaporeon · Nv. 19</li><li>Haunter · Nv. 18</li><li>Machop · Nv. 17</li><li>Rhyhorn · Nv. 16</li></ul></dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <script async src="https://tenor.com/embed.js"></script>
+        <script>
+            const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+
+            function selectTab(selectedTab, moveFocus = false) {
+                tabs.forEach((tab) => {
+                    const isSelected = tab === selectedTab;
+                    tab.setAttribute('aria-selected', String(isSelected));
+                    tab.tabIndex = isSelected ? 0 : -1;
+                    document.getElementById(tab.getAttribute('aria-controls')).hidden = !isSelected;
+                });
+
+                if (moveFocus) {
+                    selectedTab.focus();
+                }
+            }
+
+            tabs.forEach((tab, index) => {
+                tab.addEventListener('click', () => selectTab(tab));
+                tab.addEventListener('keydown', (event) => {
+                    let nextIndex = index;
+                    if (event.key === 'ArrowRight') {
+                        nextIndex = (index + 1) % tabs.length;
+                    } else if (event.key === 'ArrowLeft') {
+                        nextIndex = (index - 1 + tabs.length) % tabs.length;
+                    } else if (event.key === 'Home') {
+                        nextIndex = 0;
+                    } else if (event.key === 'End') {
+                        nextIndex = tabs.length - 1;
+                    } else {
+                        return;
+                    }
+
+                    event.preventDefault();
+                    selectTab(tabs[nextIndex], true);
+                });
+            });
+        </script>
+    </main>
+</body>
+</html>
