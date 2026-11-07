@@ -57,12 +57,13 @@ El fondo combina `--background` con un resplandor radial azul grisáceo tenue (`
 
 ### Pestañas
 
-- Colocar la navegación de pestañas debajo del botón de registro y alineada a la izquierda.
+- Alinear la navegación de pestañas a la izquierda y el botón de registro a la derecha, en una misma fila cuando haya espacio.
 - Usar botones compactos en forma de píldora, sin borde visible en reposo y con texto gris secundario.
+- Mantener la tipografía de las pestañas igual a la del botón de registro: 15 px en escritorio y 14 px en móvil.
 - La pestaña seleccionada lleva borde dorado oscuro, fondo dorado translúcido y texto dorado en negrita.
 - Añadir estados hover y foco de teclado visibles; permitir navegar con flechas izquierda/derecha e Inicio/Fin.
-- En pantallas estrechas, permitir que las pestañas ocupen más de una línea sin desbordarse.
-- Mantener bajo el espacio entre las pestañas y el panel para que las reglas quepan en la vista inicial.
+- En pantallas estrechas, permitir que la navegación y el botón pasen a filas separadas sin desbordarse.
+- Mantener bajo el espacio entre la fila superior y el panel para que las reglas quepan en la vista inicial.
 
 ### Lista de reglas
 
@@ -71,13 +72,12 @@ El fondo combina `--background` con un resplandor radial azul grisáceo tenue (`
 - Icono actual: Pokébola SVG de 28 px en dorado; sus detalles internos son oscuros.
 - Divisor: dorado, de aproximadamente 3 × 27 px.
 - Los términos destacados usan fondo dorado translúcido, borde oscuro dorado y esquinas redondeadas.
-- En móvil, reservar espacio en la primera regla para que el GIF decorativo de Lugia no tape el texto.
 
 ### Panel de entrenador
 
 - En escritorio, presentar dos columnas: GIF a la izquierda y datos a la derecha.
 - En móvil, apilar el GIF y los datos en una sola columna.
-- Limitar el ancho del GIF a unos 260 px en escritorio y 210 px en móvil para controlar la altura del panel.
+- Limitar el ancho del GIF a unos 260 px en escritorio y 210 px en móvil; usar contenedores de altura uniforme (320 px en escritorio y 260 px en móvil) para alinear los tres entrenadores.
 - Presentar los campos como bloques oscuros con borde discreto; usar etiquetas gris secundario y valores claros.
 - Mostrar el equipo Pokémon en etiquetas doradas dentro de una cuadrícula.
 - Marcar claramente los datos provisionales como datos de ejemplo hasta que se sustituyan por los valores reales.
@@ -87,7 +87,6 @@ El fondo combina `--background` con un resplandor radial azul grisáceo tenue (`
 - Mantener la proporción original (`height: auto`) y limitar el ancho al contenedor.
 - Para pixel art, usar `image-rendering: pixelated` si se amplía.
 - Centrar la imagen dentro de la tarjeta y usar pies de imagen en gris secundario.
-- Los GIF decorativos pueden superponerse dentro del panel de Rules en un tamaño compacto; usar archivos locales con transparencia real para integrarlos al fondo sin aumentar la altura del panel.
 
 ### GIF de Tenor
 

@@ -39,12 +39,20 @@
             margin: 0 auto;
         }
 
+        .topbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0 12px;
+            margin-bottom: 8px;
+        }
+
         .zone-button {
             display: flex;
             align-items: center;
             gap: 10px;
             width: fit-content;
-            margin: 0 0 10px auto;
+            margin: 0 0 0 auto;
             padding: 6px 12px;
             border: 1px solid var(--gold);
             border-radius: 999px;
@@ -111,21 +119,6 @@
             margin: 0;
             padding: 0;
             list-style: none;
-        }
-
-        .rules-lugia {
-            position: absolute;
-            top: 8px;
-            right: 14px;
-            z-index: 0;
-            width: 112px;
-            max-width: 18%;
-        }
-
-        .rules-lugia img {
-            display: block;
-            width: 100%;
-            height: auto;
         }
 
         .rule {
@@ -204,14 +197,14 @@
         }
 
         .tabs {
-            margin-top: 8px;
+            min-width: 0;
         }
 
         .tab-list {
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
-            margin: 0 0 8px;
+            margin: 0;
         }
 
         .tab {
@@ -222,7 +215,7 @@
             color: #b6b8bd;
             background: transparent;
             font: inherit;
-            font-size: 14px;
+            font-size: 15px;
             cursor: pointer;
             transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
         }
@@ -272,6 +265,24 @@
 
         .trainer-gif {
             max-width: 260px;
+            height: 320px;
+            overflow: hidden;
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            background: rgba(9, 13, 19, 0.35);
+        }
+
+        .trainer-gif .tenor-gif-embed {
+            height: 100%;
+        }
+
+        .trainer-gif .tenor-gif-embed > div {
+            height: 100%;
+            padding-top: 0 !important;
+        }
+
+        .trainer-gif iframe {
+            height: 100%;
         }
 
         .trainer-info h2 {
@@ -346,29 +357,17 @@
                 border-radius: 17px;
             }
 
-            .rules-lugia {
-                top: 4px;
-                right: 8px;
-                width: 64px;
-                max-width: 18%;
-            }
-
-            .rule:first-child .rule-text {
-                padding-right: 68px;
-            }
-
             .sprite-card {
                 padding: 17px 12px;
                 border-radius: 17px;
             }
 
             .tabs {
-                margin-top: 6px;
+                width: 100%;
             }
 
             .tab-list {
                 gap: 3px;
-                margin-bottom: 6px;
             }
 
             .tab {
@@ -389,6 +388,7 @@
 
             .trainer-gif {
                 max-width: 210px;
+                height: 260px;
             }
 
             .pokemon-team {
@@ -397,7 +397,6 @@
 
             .zone-button {
                 gap: 7px;
-                margin-bottom: 8px;
                 padding: 6px 10px;
                 font-size: 14px;
             }
@@ -437,21 +436,25 @@
 </head>
 <body>
     <main>
-        <a class="zone-button" href="https://docs.google.com/forms/d/e/1FAIpQLScX7On9NigrHsgnK8KJ4yqGEKwNasQ1YtEfAtT-5ndRH7_kog/viewform?usp=preview" target="_blank" rel="noopener noreferrer">
-            <svg class="zone-button-icon" viewBox="0 0 60 60" aria-hidden="true">
-                <circle cx="30" cy="30" r="27" fill="none" stroke="currentColor" stroke-width="2.5"/>
-                <path d="M3 30h18M39 30h18" fill="none" stroke="currentColor" stroke-width="3"/>
-                <circle cx="30" cy="30" r="10" fill="none" stroke="currentColor" stroke-width="4"/>
-            </svg>
-            <span>Registro de Pokémon por zona</span>
-        </a>
-        <div class="tabs">
-            <div class="tab-list" role="tablist" aria-label="Secciones de Vortex">
-                <button class="tab" id="tab-rules" type="button" role="tab" aria-selected="true" aria-controls="panel-rules" tabindex="0">Rules</button>
-                <button class="tab" id="tab-trainer-1" type="button" role="tab" aria-selected="false" aria-controls="panel-trainer-1" tabindex="-1">Entrenador 1</button>
-                <button class="tab" id="tab-trainer-2" type="button" role="tab" aria-selected="false" aria-controls="panel-trainer-2" tabindex="-1">Entrenador 2</button>
-                <button class="tab" id="tab-trainer-3" type="button" role="tab" aria-selected="false" aria-controls="panel-trainer-3" tabindex="-1">Entrenador 3</button>
+        <div class="topbar">
+            <div class="tabs">
+                <div class="tab-list" role="tablist" aria-label="Secciones de Vortex">
+                    <button class="tab" id="tab-rules" type="button" role="tab" aria-selected="true" aria-controls="panel-rules" tabindex="0">Rules</button>
+                    <button class="tab" id="tab-trainer-1" type="button" role="tab" aria-selected="false" aria-controls="panel-trainer-1" tabindex="-1">Entrenador 1</button>
+                    <button class="tab" id="tab-trainer-2" type="button" role="tab" aria-selected="false" aria-controls="panel-trainer-2" tabindex="-1">Entrenador 2</button>
+                    <button class="tab" id="tab-trainer-3" type="button" role="tab" aria-selected="false" aria-controls="panel-trainer-3" tabindex="-1">Entrenador 3</button>
+                </div>
             </div>
+            <a class="zone-button" href="https://docs.google.com/forms/d/e/1FAIpQLScX7On9NigrHsgnK8KJ4yqGEKwNasQ1YtEfAtT-5ndRH7_kog/viewform?usp=preview" target="_blank" rel="noopener noreferrer">
+                <svg class="zone-button-icon" viewBox="0 0 60 60" aria-hidden="true">
+                    <circle cx="30" cy="30" r="27" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                    <path d="M3 30h18M39 30h18" fill="none" stroke="currentColor" stroke-width="3"/>
+                    <circle cx="30" cy="30" r="10" fill="none" stroke="currentColor" stroke-width="4"/>
+                </svg>
+                <span>Registro de Pokémon por zona</span>
+            </a>
+        </div>
+        <div class="tabs-content">
             <section class="tab-panel rules-card" id="panel-rules" role="tabpanel" aria-labelledby="tab-rules" tabindex="0">
             <ul class="rules-list">
                 <li class="rule">
@@ -545,9 +548,6 @@
                     <div class="rule-text">Al <span class="highlight">DERROTAR</span> todos los <span class="highlight">LIDERES</span> de una región se <span class="highlight">HABILITA REEMPLAZAR</span> un <span class="highlight">POKEMON</span> en cualquier zona</div>
                 </li>
             </ul>
-            <div class="rules-lugia" role="group" aria-label="GIF de Lugia">
-                <img src="lugia-pokemon.gif" alt="Lugia volando">
-            </div>
             </section>
             <section class="tab-panel trainer-card" id="panel-trainer-1" role="tabpanel" aria-labelledby="tab-trainer-1" tabindex="0" hidden>
                 <div class="trainer-grid">
@@ -577,8 +577,8 @@
             <section class="tab-panel trainer-card" id="panel-trainer-2" role="tabpanel" aria-labelledby="tab-trainer-2" tabindex="0" hidden>
                 <div class="trainer-grid">
                     <div class="trainer-gif">
-                        <div class="tenor-gif-embed" data-postid="22763226" data-share-method="host" data-aspect-ratio="0.640625" data-width="100%">
-                            <a href="https://tenor.com/view/pokemon-gif-22763226">Pokemon Sticker</a>
+                        <div class="tenor-gif-embed" data-postid="22762989" data-share-method="host" data-aspect-ratio="0.55625" data-width="100%">
+                            <a href="https://tenor.com/view/pokemon-gif-22762989">Pokemon Sticker</a>
                             from <a href="https://tenor.com/search/pokemon-stickers">Pokemon Stickers</a>
                         </div>
                     </div>
